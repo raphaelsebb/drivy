@@ -166,12 +166,13 @@ var rentalModifications = [{
 }];
 
 //functions
-function exercise_4(rental) {
+function exercise_5(rental) {
+  console.log("**********");
   var carid = rental.carId;
   var pricePerKm;
   var pricePerDay;
-  var i;
 
+  var i;
   for(i = 0; i < cars.length; i++) {
     if (cars[i].id == carid) {
       console.log(cars[i].id);
@@ -196,17 +197,20 @@ function exercise_4(rental) {
   var price = time + distance;
 
   rental.price = price;
-  rental.commission.insurance = price * 0.5;
+  var commission = price * 0.3;
+  rental.commission.insurance = commission * 0.5;
   rental.commission.assistance = days;
-  rental.commission.drivy = rental.price - rental.commission.insurance - rental.commission.assistance;
+  rental.commission.drivy = commission - rental.commission.insurance - rental.commission.assistance;
 
   var option
   if(rental.options.deductibleReduction == true) {
     option = days * 4;
     console.log("Option " + option);
-    rental.commission.drivy = rental.price - rental.commission.insurance - rental.commission.assistance + option;
+    rental.commission.drivy = commission - rental.commission.insurance - rental.commission.assistance + option;
     price += option;
   }
+
+  credit_debit(rental, commission);
 
   return "Cost = " + price;
 }
@@ -233,9 +237,23 @@ function reducePrice(days){
   return reduce;
 }
 
+function credit_debit(rental){
+  var id = rental.id;
+  var i;
+  for(i = 0; i < actors.length; i++){
+    if(id == actors[i].rentalId){
+      actors[i].payment[0].amount = rental.price;
+      actors[i].payment[1].amount = rental.price * 0.7;
+      actors[i].payment[2].amount = rental.commission.insurance;
+      actors[i].payment[3].amount = rental.commission.assistance;
+      actors[i].payment[4].amount = rental.commission.drivy;
+    }
+  }
+}
+
 var i;
 for(i = 0; i < rentals.length; i++) {
-  console.log(exercise_4(rentals[i]));
+  console.log(exercise_5(rentals[i]));
 }
 
 //logs
