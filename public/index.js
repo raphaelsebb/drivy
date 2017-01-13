@@ -165,6 +165,41 @@ var rentalModifications = [{
   'pickupDate': '2015-12-05'
 }];
 
+//functions
+function exercise_1(rental) {
+  var carid = rental.carId;
+  var pricePerKm;
+  var pricePerDay;
+  var i;
+
+  for(i = 0; i < cars.length; i++) {
+    if (cars[i].id == carid) {
+      console.log(cars[i].id);
+      pricePerKm = cars[i].pricePerKm;
+      pricePerDay = cars[i].pricePerDay;
+      console.log("Price per Km "+pricePerKm);
+      console.log("Price per Day "+pricePerDay);
+    }
+  }
+
+  var d1 = new Date(rental.returnDate)
+  var d2 = new Date(rental.pickupDate)
+  console.log(((d1 - d2) / (24*60*60*1000)) + 1 + " days");
+  var time = pricePerDay * (1 + ((d1 - d2) / (24*60*60*1000)));
+  console.log(rental.distance + " km");
+  var distance = pricePerKm * rental.distance;
+  var price = time + distance;
+
+  rental.price = price;
+  return "Cost = " + price;
+}
+
+var i;
+for(i = 0; i < rentals.length; i++) {
+  console.log(exercise_1(rentals[i]));
+}
+
+//logs
 console.log(cars);
 console.log(rentals);
 console.log(actors);
