@@ -166,7 +166,7 @@ var rentalModifications = [{
 }];
 
 //functions
-function exercise_1(rental) {
+function exercise_2(rental) {
   var carid = rental.carId;
   var pricePerKm;
   var pricePerDay;
@@ -184,8 +184,12 @@ function exercise_1(rental) {
 
   var d1 = new Date(rental.returnDate)
   var d2 = new Date(rental.pickupDate)
-  console.log(((d1 - d2) / (24*60*60*1000)) + 1 + " days");
-  var time = pricePerDay * (1 + ((d1 - d2) / (24*60*60*1000)));
+  var days = nDays(d1,d2);
+  console.log(days + " days");
+
+  pricePerDay = (1 - reducePrice(days)) * pricePerDay;
+
+  var time = pricePerDay * days;
   console.log(rental.distance + " km");
   var distance = pricePerKm * rental.distance;
   var price = time + distance;
@@ -194,9 +198,31 @@ function exercise_1(rental) {
   return "Cost = " + price;
 }
 
+function nDays(d1, d2){
+  var days = ((d1 - d2) / (24*60*60*1000)) + 1;
+  return days;
+}
+
+function reducePrice(days){
+  var reduce = 0;
+  if(days > 1 && days <= 4){
+    reduce = 0.1;
+    console.log("reduce 0.1");
+  }
+  else if(days > 4 && days <= 10){
+    reduce = 0.3;
+    console.log("reduce 0.3");
+  }
+  else if(days > 10){
+    reduce = 0.5;
+    console.log("reduce 0.5");
+  }
+  return reduce;
+}
+
 var i;
 for(i = 0; i < rentals.length; i++) {
-  console.log(exercise_1(rentals[i]));
+  console.log(exercise_2(rentals[i]));
 }
 
 //logs
